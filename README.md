@@ -1,8 +1,16 @@
-# Asset::Image::Opt
+# Asset-Image-Opt
 
-TODO: Write a gem description
+Local assets optimizer for Rails apps
 
 ## Installation
+
+This gem requires two image optimization utilities: **optipng** and
+**jpegoptim**.
+You can install them by following the instructions on each authors'
+page:
+
+* Installation for [optipng](http://optipng.sourceforge.net/)
+* Installation for [jpegoptim](http://freecode.com/projects/jpegoptim)
 
 Add this line to your application's Gemfile:
 
@@ -12,13 +20,12 @@ And then execute:
 
     $ bundle
 
-Or install it yourself as:
-
-    $ gem install asset-image-opt
-
 ## Usage
+Execute:
 
-TODO: Write usage instructions here
+    bundle exec optimize_images
+    
+It will optimize all images in app/assets/images 
 
 ## Contributing
 
