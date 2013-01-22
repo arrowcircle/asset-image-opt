@@ -13,10 +13,17 @@ class AssetImageOpt
   end
 
   def optimize
-    @files.each do |file|
-      optimize_file(file)
+    if @files.empty?
+      puts "No files to optimize"
+    else
+      puts "Optimizing images"
+      @files.each do |file|
+        optimize_file(file)
+        print '.'
+      end
+      @optimized_size = get_files_size
+      puts ""
     end
-    @optimized_size = get_files_size
   end
 
   def self.get_files_for_ext(ext)

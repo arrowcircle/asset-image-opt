@@ -1,0 +1,9 @@
+#!/usr/bin/env ruby
+
+require 'asset-image-opt'
+opt = AssetImageOpt.new
+puts "Total files: #{opt.files.count}"
+puts "Total size: #{opt.initial_size}"
+opt.optimize
+puts "Total optimized size: #{opt.optimized_size}" if opt.optimized_size
+puts "Win: #{(opt.initial_size.to_f/opt.optimized_size.to_f - 1.0)*10000.0/100} %" if opt.optimized_size
