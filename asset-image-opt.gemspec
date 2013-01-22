@@ -10,7 +10,7 @@ Gem::Specification.new do |gem|
   gem.email         = ["oleg.bovykin@gmail.com"]
   gem.description   = %q{Lossless optimization for rails assets images}
   gem.summary       = %q{Gem is a command line tool for optimization of rails assets images in app/assets.images}
-  gem.homepage      = ""
+  gem.homepage      = "https://github.com/arrowcircle/asset-image-opt"
 
   gem.files         = `git ls-files`.split($/)
   gem.executables   = gem.files.grep(%r{^bin/}).map{ |f| File.basename(f) }
