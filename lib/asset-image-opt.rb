@@ -1,5 +1,6 @@
 require "asset-image-opt/version"
 require 'piet'
+require 'thread'
 
 class AssetImageOpt
   EXTENSIONS = %w{png jpeg jpg}
@@ -12,17 +13,48 @@ class AssetImageOpt
     @initial_size = get_files_size
   end
 
+  def threads_count
+    case RbConfig::CONFIG['host_os']
+    when /darwin9/
+      `hwprefs cpu_count`.to_i
+    when /darwin/
+      ((`which hwprefs` != '') ? `hwprefs thread_count` : `sysctl -n hw.ncpu`).to_i
+    when /linux/
+      `cat /proc/cpuinfo | grep processor | wc -l`.to_i
+    when /freebsd/
+      `sysctl -n hw.ncpu`.to_i
+    when /mswin|mingw/
+      require 'win32ole'
+      wmi = WIN32OLE.connect("winmgmts://")
+      cpu = wmi.ExecQuery("select NumberOfCores from Win32_Processor") # TODO count hyper-threaded in this
+      cpu.to_enum.first.NumberOfCores
+    end
+  end
+
+  def optimize_files
+    queue = Queue.new
+    @files.each{|e| queue << e }
+
+    threads = []
+    threads_count.times do
+      threads << Thread.new do
+        while (e = queue.pop(true) rescue nil)
+          optimize_file(e)
+        end
+      end
+    end
+
+    threads.each {|t| t.join }
+    puts ""
+    @optimized_size = get_files_size
+  end
+
   def optimize
     if @files.empty?
       puts "No files to optimize"
     else
       puts "Optimizing images"
-      @files.each do |file|
-        optimize_file(file)
-        print '.'
-      end
-      @optimized_size = get_files_size
-      puts ""
+      optimize_files
     end
   end
 
@@ -40,6 +72,7 @@ class AssetImageOpt
 
   def optimize_file(file)
     Piet.optimize(file)
+    print '.'
   end
 
   def get_files_size
