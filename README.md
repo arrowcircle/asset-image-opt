@@ -1,16 +1,23 @@
 # Asset-Image-Opt
 
-Local assets optimizer for Rails apps
+Local assets optimizer for Rails apps. It will use lossless compression on every jpeg/jpg and png files in app/assets/images directory and subdirecotires. 
+
+Compression efficiency is 5-15% for free and without quality loss. 
 
 ## Installation
 
 This gem requires two image optimization utilities: **optipng** and
 **jpegoptim**.
-You can install them by following the instructions on each authors'
-page:
 
-* Installation for [optipng](http://optipng.sourceforge.net/)
-* Installation for [jpegoptim](http://freecode.com/projects/jpegoptim)
+### Debian/Ubuntu
+
+	sudo apt-get install -y optipng jpegoptim
+	
+### OSX
+
+	brew install optipng jpegoptim
+	
+### Rails
 
 Add this line to your application's Gemfile:
 
@@ -25,7 +32,11 @@ Execute:
 
     bundle exec optimize_images
     
-It will optimize all images in app/assets/images 
+It will optimize all images in app/assets/images and subdirs.
+
+## TODO
+* Check if **optipng** and **jpegoptim** is present in the system, show instructions otherwise
+* Remove test_images from rspec and gem source
 
 ## Contributing
 
