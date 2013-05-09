@@ -1,9 +1,9 @@
 require "asset-image-opt/version"
-require 'piet'
+require 'image_optim'
 require 'thread'
 
 class AssetImageOpt
-  EXTENSIONS = %w{png jpeg jpg}
+  EXTENSIONS = %w{png jpeg jpg gif}
   WORKING_DIR = "app/assets/images"
 
   attr_accessor :files, :initial_size, :optimized_size
@@ -11,6 +11,7 @@ class AssetImageOpt
   def initialize
     @files = AssetImageOpt.get_files
     @initial_size = get_files_size
+    @optimizer = ImageOptim.new(:pngout => false)
   end
 
   def threads_count
@@ -71,7 +72,7 @@ class AssetImageOpt
   end
 
   def optimize_file(file)
-    Piet.optimize(file)
+    @optimizer.optimize_image!(file)
     print '.'
   end
 
